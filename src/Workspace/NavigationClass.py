@@ -1,22 +1,25 @@
 
 
 class Navigation():
-    def __init__(self):
+    @staticmethod
+    def getObjectsInRadiusOfMe(me):
+        # dataFromOtherPlayersinRadius = BaseModel.xy;
         pass
 
-    def getObjectsInRadiusOfMe(self, me):
-        pass
-
-    def getAsteroidResultingVector(self, players):
+    @staticmethod
+    def getAsteroidResultingVector(players):
         pass
     
-    def getDeadZoneResultingVector(self, deadZoneDistance):
+    @staticmethod
+    def getDeadZoneResultingVector(deadZoneDistance):
         pass
 
-    def getPlayersResultingVector(self, players):
+    @staticmethod
+    def getPlayersResultingVector(players):
         pass
-
-    def getTotalResultingVector(self):
+    
+    @staticmethod
+    def getTotalResultingVector():
         pass
 
         

@@ -1,5 +1,6 @@
 from Model.MotionModel import MotionModel
 from Workspace.BaseWorkspace import BaseWorkspace
+from Controller.ClientController import ClientController
 
 
 class myWorkspace(BaseWorkspace):
@@ -12,6 +13,8 @@ class myWorkspace(BaseWorkspace):
         if self.ctrl.wait_until_event():
             self.counter += 1
             _my_ship = self.ctrl.get_player(self.ctrl.get_name())
+            print(_my_ship.xy)
+            raise Exception
             _players = self.ctrl.get_data_from_players(enemy_only=True)
             _dist, _nearest = self.ctrl.get_the_nearest_mob(_my_ship.xy, _players)
             if _nearest is not None:
@@ -19,3 +22,4 @@ class myWorkspace(BaseWorkspace):
                 _motion.shoot()
                 _motion.set_shoot_dir(_dir_to_shoot)
             self.ctrl.set_motion_command(_motion)
+
