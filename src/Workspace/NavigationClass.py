@@ -46,6 +46,14 @@ class NavigationMethods():
 
 
 
+    @staticmethod
+    def checkIfInDeadzone(my_controller, my_ship):
+        deadzone_center = my_controller.get_dead_zone_center()
+        deadzone_radius = my_controller.get_dead_zone_radius() - 400
+        distance = math.sqrt((my_ship.xy[0]-deadzone_center[0])**2 + (my_ship.xy[1] - deadzone_center[1])**2)
+        return distance > deadzone_radius
+
+
         
 
     @staticmethod
