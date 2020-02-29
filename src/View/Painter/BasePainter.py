@@ -5,8 +5,7 @@ from PySide2.QtGui import QPainter
 
 from Model.BaseModel import BaseModel
 
-IMAGE_PATH_PREFIX = '' if sys.platform == 'win32' else '../'
-IMAGE_ROOT_PATH = IMAGE_PATH_PREFIX + 'Image/'
+IMAGE_ROOT_PATH = 'Image/'
 IMAGE_SHIP_PATH = IMAGE_ROOT_PATH + 'spaceship.png'
 IMAGE_ASTEROID_PATH = IMAGE_ROOT_PATH + 'asteroid.png'
 IMAGE_GALAXY_PATH = IMAGE_ROOT_PATH + 'galaxy_map.png'

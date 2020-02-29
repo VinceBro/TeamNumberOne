@@ -4,7 +4,7 @@ import sys
 from PySide2.QtWidgets import QApplication
 
 from Workspace.myWorkspace import myWorkspace
-from Workspace.ExampleWorkspace import ExampleWorkspace
+from Workspace.myWorkspace import myWorkspace
 
 __author__ = "Julien Becirovski <j.becirovski@protolabquebec.ca>"
 
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     if args.type == ArgType.T_CLIENT:
         print('***** GAME CLIENT START *****')
         app = QApplication(sys.argv)
-        client = ClientController(ExampleWorkspace)
+        client = ClientController(myWorkspace)
         # client = ClientController(myWorkspace)
         client.set_player_name(args.pseudo)
         print('> player created: {}'.format(args.pseudo))

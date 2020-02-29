@@ -18,8 +18,8 @@ class MotionKey:
 
 class MotionModel(MotionCommandInterface):
     def __init__(self):
-        self.motion_xy: np.ndarray = np.array([0, 0])
-        self.shoot_xy: np.ndarray = np.array([0, 1])
+        self.motion_xy: np.ndarray = np.array([0.0, 0.0])
+        self.shoot_xy: np.ndarray = np.array([0.0, 1.0])
         self.state: str = MotionState.STATE_STOP
 
     def set_acceleration(self, percent: float) -> None:
