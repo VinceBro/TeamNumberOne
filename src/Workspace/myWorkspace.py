@@ -25,9 +25,11 @@ class myWorkspace(BaseWorkspace):
                 _motion.set_acceleration(1)
                 _motion.move()
             elif (nm.checkIfInDeadzone(self.ctrl, self.my_ship)):
-                if self.deadzone_counter < 75:
+                if self.deadzone_counter < 80:
                     _motion.set_acceleration(1)
                     _motion.set_rotation(0.8)
+
+                    
                     #t'es stuck
                     
                     
@@ -37,7 +39,9 @@ class myWorkspace(BaseWorkspace):
 
             elif _nearest is not None:
                 self.deadzone_counter = 0
+                print(f"speed : {_nearest.speed}")
                 _dir_to_shoot = self.ctrl.get_direction_between(self.my_ship, _nearest)
+                print(f"dir_to_shoot: {_dir_to_shoot}")
                 _motion.shoot()
                 _motion.set_shoot_dir(_dir_to_shoot)
 
