@@ -25,9 +25,9 @@ class myWorkspace(BaseWorkspace):
                 _motion.set_acceleration(1)
                 _motion.move()
             elif (nm.checkIfInDeadzone(self.ctrl, self.my_ship)):
-                if self.deadzone_counter < 80:
+                if self.deadzone_counter < 75:
                     _motion.set_acceleration(1)
-                    _motion.set_rotation(1)
+                    _motion.set_rotation(0.8)
                     #t'es stuck
                     
                     
