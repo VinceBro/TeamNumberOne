@@ -21,7 +21,7 @@ class PartyState:
 class PartyConst:
     # TIMING
     TIME_MAX_WAITING = minutes(1) + secondes(30)
-    TIME_MAX_READY = secondes(0)
+    TIME_MAX_READY = secondes(1)
     TIME_MAX_GAME = minutes(3)
     TIME_MAX_DEAD_ZONE = minutes(2) + secondes(30)
     # TIME_MAX_GAME = secondes(30)
