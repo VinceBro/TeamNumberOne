@@ -75,7 +75,7 @@ class BaseModel(MobileObjectInterface):
 
     @property
     def angle(self) -> float:
-        return 180 * np.arctan2(self.dir_x, self.dir_y) / np.pi
+        return 180 * np.arctan2(self.dir_y, self.dir_x) / np.pi
 
     def set_angle(self, angle) -> None:
         self._transform = QTransform()
@@ -88,11 +88,11 @@ class BaseModel(MobileObjectInterface):
 
     @property
     def dir_x(self) -> float:
-        return self._dir_xy[0]
+        return self._dir_xy[1]
 
     @property
     def dir_y(self) -> float:
-        return self._dir_xy[1]
+        return self._dir_xy[0]
 
     @property
     def speed(self) -> np.ndarray:

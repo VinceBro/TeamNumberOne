@@ -2,6 +2,19 @@ import numpy as np
 import math
 import sys
 
+def normalizeVector(vector):
+    unit_vector = vector / np.linalg.norm(vector)
+    return unit_vector
+
+
+def angleBetween(v1, v2):
+    v1_unit = normalizeVector(v1)
+    v2_unit = normalizeVector(v2)
+    v1_y, v1_x = v1_unit[0], v1_unit[1]
+    v2_y, v2_x = v2_unit[0], v2_unit[1]
+    # return np.arccos(np.clip(np.dot(v1_unit, v2_unit), -1.0, 1.0))
+    return np.arctan2(v1_x*v2_y - v1_y*v2_x, v1_x*v2_x + v1_y*v2_y)
+
 class NavigationMethods():
     @staticmethod
     def getObjectsInRadiusOfMe(my_controller, my_ship, radius):
@@ -27,21 +40,24 @@ class NavigationMethods():
         result_vector = np.ndarray(2)
         if(len(asteroids_in_radius) > 1):
             for asteroid in asteroids_in_radius:
-                u_vector = asteroid.dir
+                u_vector = asteroid.dir# #     
+
+                print(f"u_vector : {u_vector}")
                 closest_point = u_vector*asteroid.radius + asteroid.xy
                 distance = math.sqrt((my_ship.xy[0]-closest_point[0])**2 + (my_ship.xy[1] - closest_point[1])**2)
                 # weight = abs(my_ship.xy-closest_point)
                 # weighted_angles.append(1/weight * u_vector)
                 weight = 1/distance
-                somme += weight
-                weights.append((u_vector,weight))
+                result_vector += weight * u_vector
+                # somme += weight
+                # weights.append((u_vector,weight))
 
-            for vector, w in weights:
-                print(f"somme : {somme}", file=sys.stderr)
-                print(f"vector: {vector}", file=sys.stderr)
-                print(f"w: {w}",file=sys.stderr)
-                result_vector += vector* (w/somme)
-                print(f"result_vector: {result_vector}",file=sys.stderr)
+            # for vector, w in weights:
+            #     print(f"somme : {somme}", file=sys.stderr)
+            #     print(f"vector: {vector}", file=sys.stderr)
+            #     print(f"w: {w}",file=sys.stderr)
+            #     result_vector += vector* (w/somme)
+            print(f"result_vector: {result_vector}",file=sys.stderr)
             return result_vector
 
 
@@ -57,11 +73,18 @@ class NavigationMethods():
         
 
     @staticmethod
-    def moveShipAccordingToVector(my_controller, my_ship, u_vector):
-        pass
-        # print(u_vector)
-        # angle_direction_to_go = np.angle(u_vector)
-        # print(angle_direction_to_go)
+    def moveShipAccordingToVector(my_controller, my_ship, motion_control, u_vector):
+        turn_angle = angleBetween(u_vector, my_ship.dir)
+        print(f"angle : {my_ship.angle}")
+        print(f"dir : {my_ship.dir}")
+        print(f"turn_angle : {turn_angle}")
+        if turn_angle > 0.05:
+            motion_control.set_rotation(-1.0)
+            return True
+        elif turn_angle < -0.05:
+            motion_control.set_rotation(1.0)
+            return True
+        else: return False
     
     @staticmethod
     def getDeadZoneResultingVector(asteroids_in_radius):
