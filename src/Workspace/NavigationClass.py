@@ -12,8 +12,15 @@ def angleBetween(v1, v2):
     v2_unit = normalizeVector(v2)
     v1_y, v1_x = v1_unit[0], v1_unit[1]
     v2_y, v2_x = v2_unit[0], v2_unit[1]
-    # return np.arccos(np.clip(np.dot(v1_unit, v2_unit), -1.0, 1.0))
     return np.arctan2(v1_x*v2_y - v1_y*v2_x, v1_x*v2_x + v1_y*v2_y)
+
+def getOrthogonalVector(vector):
+    vector_normalized = normalizeVector(vector)
+    orthogonal_vector = np.random.randn(2)
+    orthogonal_vector -= orthogonal_vector.dot(vector_normalized) * vector_normalized
+    return normalizeVector(orthogonal_vector)
+
+
 
 class NavigationMethods():
     @staticmethod
@@ -37,7 +44,7 @@ class NavigationMethods():
         weights = []
         distances = []
         somme = 0
-        result_vector = np.ndarray(2)
+        result_vector = np.zeros(2)
         if(len(asteroids_in_radius) > 1):
             for asteroid in asteroids_in_radius:
                 u_vector = asteroid.dir# #     
@@ -45,27 +52,19 @@ class NavigationMethods():
                 print(f"u_vector : {u_vector}")
                 closest_point = u_vector*asteroid.radius + asteroid.xy
                 distance = math.sqrt((my_ship.xy[0]-closest_point[0])**2 + (my_ship.xy[1] - closest_point[1])**2)
-                # weight = abs(my_ship.xy-closest_point)
-                # weighted_angles.append(1/weight * u_vector)
+                print(f"distance : {distance}")
                 weight = 1/distance
                 result_vector += weight * u_vector
-                # somme += weight
-                # weights.append((u_vector,weight))
-
-            # for vector, w in weights:
-            #     print(f"somme : {somme}", file=sys.stderr)
-            #     print(f"vector: {vector}", file=sys.stderr)
-            #     print(f"w: {w}",file=sys.stderr)
-            #     result_vector += vector* (w/somme)
-            print(f"result_vector: {result_vector}",file=sys.stderr)
+            # result_vector *= -1
+            print(f"result_vector: {normalizeVector(result_vector)}",file=sys.stderr)
             return result_vector
 
 
 
     @staticmethod
-    def checkIfInDeadzone(my_controller, my_ship):
+    def checkIfInDeadzone(my_controller, my_ship, deadzone_offset):
         deadzone_center = my_controller.get_dead_zone_center()
-        deadzone_radius = my_controller.get_dead_zone_radius() - 400
+        deadzone_radius = my_controller.get_dead_zone_radius() - deadzone_offset
         distance = math.sqrt((my_ship.xy[0]-deadzone_center[0])**2 + (my_ship.xy[1] - deadzone_center[1])**2)
         return distance > deadzone_radius
 
@@ -75,20 +74,32 @@ class NavigationMethods():
     @staticmethod
     def moveShipAccordingToVector(my_controller, my_ship, motion_control, u_vector):
         turn_angle = angleBetween(u_vector, my_ship.dir)
-        print(f"angle : {my_ship.angle}")
-        print(f"dir : {my_ship.dir}")
         print(f"turn_angle : {turn_angle}")
-        if turn_angle > 0.05:
+        if turn_angle > 0.03:
             motion_control.set_rotation(-1.0)
             return True
-        elif turn_angle < -0.05:
+        elif turn_angle < -0.03:
             motion_control.set_rotation(1.0)
             return True
         else: return False
     
     @staticmethod
-    def getDeadZoneResultingVector(asteroids_in_radius):
-        pass
+    def getDeadZoneResultingVector(my_controller, my_ship):
+        resulting_vector = np.zeros(2)
+        deadzone_center = my_controller.get_dead_zone_center()
+        ship_point = my_ship.xy
+        resulting_vector[0] = (-1) * ship_point[1]
+        resulting_vector[1] = (-1) *ship_point[0]
+        resulting_vector = normalizeVector(resulting_vector)
+        return resulting_vector
+    
+    @staticmethod
+    def getDeadZoneOrthogonalResultingVector(my_controller, my_ship):
+        resulting_vector = NavigationMethods.getDeadZoneResultingVector(my_controller, my_ship)
+        orthogonal_vector = getOrthogonalVector(resulting_vector)
+        print(f"orthogonal_vector {orthogonal_vector}")
+        return orthogonal_vector
+
         
 
 
