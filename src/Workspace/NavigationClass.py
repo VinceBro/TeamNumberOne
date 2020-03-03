@@ -15,8 +15,9 @@ def angleBetween(v1, v2):
     return np.arctan2(v1_x*v2_y - v1_y*v2_x, v1_x*v2_x + v1_y*v2_y)
 
 def getOrthogonalVector(vector):
+    arbritary_value = 1
     vector_normalized = normalizeVector(vector)
-    orthogonal_vector = np.random.randn(2)
+    orthogonal_vector = np.array([0.0, 1.0])
     orthogonal_vector -= orthogonal_vector.dot(vector_normalized) * vector_normalized
     return normalizeVector(orthogonal_vector)
 
